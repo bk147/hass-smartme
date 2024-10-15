@@ -13,6 +13,7 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
         self._username: None = None
         self._password: None = None
         self._discovered_devices: dict[str, str] = {}
+        self._data: dict[str, Any] = {}
   
     async def async_step_user(self, formdata):
         if formdata is not None:
@@ -45,8 +46,10 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
             deviceid = formdata['deviceid']
             await self.async_set_unique_id(deviceid, raise_on_progress=False)
             self._abort_if_unique_id_configured()
+            self._data['username'] = self._username
+            self._data['password'] = self._password
             return self.async_create_entry(
-                title=self._discovered_devices[deviceid], data={username: self._username, password: self._password}
+                title=self._discovered_devices[deviceid], data=self._data)
             )
 
         if not self._discovered_devices:
