@@ -7,7 +7,7 @@
         "description": "The credentials will be used to pull the data from the server.",
         "data": {
           "username": "Username",
-          "password": "Password",
+          "password": "Password"
         }
       },
       "device": {
