@@ -1,9 +1,8 @@
 class Hub:
     manufacturer = "Smartme"
     
-    def __init__(self, deviceid: str, devicename: str, username: str, password: str) -> None:
+    def __init__(self, deviceid: str, username: str, password: str) -> None:
         self.deviceid = deviceid
-        self.devicename = devicename
         self.username = username
         self.password = password
 
