@@ -36,9 +36,6 @@ class ExampleSensor(SensorEntity):
 
     def __init__(self, hub) -> None:
         """Initialize a sensor."""
-        self._deviceid = hub.deviceid
-        self._username = hub.username
-        self._password = hub.password
         self._callbacks = set()
         self._value = 25
 
@@ -50,7 +47,7 @@ class ExampleSensor(SensorEntity):
     @property
     def device_info(self):
         """Return information to link this entity with the correct device."""
-        return {"identifiers": {(DOMAIN, self._deviceid)}}
+        return {"identifiers": {(DOMAIN, self.hub._deviceid)}}
         
     # The value of this sensor.
     @property
@@ -62,8 +59,8 @@ class ExampleSensor(SensorEntity):
     # If an entity is offline (return False), the UI will refelect this.
     @property
     def available(self) -> bool:
-        """Return True if roller and hub is available."""
-        return self._roller.online and self._roller.hub.online
+        """Return True if device is available."""
+        return True
 
     async def async_added_to_hass(self):
         """Run when this Entity has been added to HA."""
