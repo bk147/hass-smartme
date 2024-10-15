@@ -15,9 +15,9 @@ PLATFORMS = [Platform.SENSOR]
 class Hub:
     def __init__(self, hass: HomeAssistant, deviceid: str, username: str, password: str) -> None:
         """Init dummy hub."""
-        self._deviceid = deviceid
-        self._username = username
-        self._password = password
+        self.deviceid = deviceid
+        self.username = username
+        self.password = password
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
