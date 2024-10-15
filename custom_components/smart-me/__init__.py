@@ -20,7 +20,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     username = entry.data["username"]
     password = entry.data["password"]
     
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = Hub(hass, deviceid=deviceid, devicename=devicename, username=username, password=password)
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = hub.Hub(hass, deviceid=deviceid, devicename=devicename, username=username, password=password)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
