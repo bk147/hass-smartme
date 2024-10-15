@@ -10,7 +10,6 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
 
     def __init__(self) -> None:
         """Initialize the config flow."""
-        self._session = async_get_clientsession(self.hass)
         self._username: None = None
         self._password: None = None
         self._deviceid:  None = None
@@ -18,10 +17,11 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
   
     async def async_step_user(self, formdata):
         if formdata is not None:
+            websession = async_get_clientsession(self.hass)
             self._username = formdata['username']
             self._password = formdata['password']
             try:
-                async with self._session.get(url="https://api.smart-me.com/Devices", auth=BasicAuth(self._username, self._password)) as response:
+                async with websession.get(url="https://api.smart-me.com/Devices", auth=BasicAuth(self._username, self._password)) as response:
                     response.raise_for_status()
                     response_data = await response.json()
                     for device in response_data:
