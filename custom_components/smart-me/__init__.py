@@ -6,7 +6,11 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform
 
-from . import hub
+class Hub:
+    def __init__(self, deviceid: str, username: str, password: str) -> None:
+        self.deviceid = deviceid
+        self.username = username
+        self.password = password
 
 # List of platforms to support. There should be a matching .py file for each,
 # eg <cover.py> and <sensor.py>
@@ -19,7 +23,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     username = entry.data["username"]
     password = entry.data["password"]
     
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = hub.Hub(hass, deviceid, username, password)
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = Hub(hass, deviceid, username, password)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
