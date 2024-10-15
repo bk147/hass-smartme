@@ -16,29 +16,30 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
         self._discovered_devices: dict[str, str] = {}
   
     async def async_step_user(self, formdata):
-        if formdata is None:
-            return self.async_show_form(
-                step_id="user", data_schema=vol.Schema({
-                  vol.Required("username"): str,
-                  vol.Required("password"): str
-                })
-            )
-
-        websession = async_get_clientsession(self.hass)
-        self._username = formdata['username']
-        self._password = formdata['password']
-        try:
-            async with websession.get(url="https://api.smart-me.com/Devices", auth=BasicAuth(self._username, self._password)) as response:
-                response.raise_for_status()
-                response_data = await response.json()
-                for device in response_data:
-                    device_id = device['Id']
-                    device_name = device['Name']
-                    self._discovered_devices[device_id] = device_name
-        except ClientResponseError as exc:
-            return self.async_abort(reason="authentication")
-        except ClientError as exc:
-            return self.async_abort(reason="connenction")
+        if formdata is not None:
+            websession = async_get_clientsession(self.hass)
+            self._username = formdata['username']
+            self._password = formdata['password']
+            try:
+                async with websession.get(url="https://api.smart-me.com/Devices", auth=BasicAuth(self._username, self._password)) as response:
+                    response.raise_for_status()
+                    response_data = await response.json()
+                    for device in response_data:
+                        device_id = device['Id']
+                        device_name = device['Name']
+                        self._discovered_devices[device_id] = device_name
+                    return
+            except ClientResponseError as exc:
+                return self.async_abort(reason="authentication")
+            except ClientError as exc:
+                return self.async_abort(reason="connenction")
+        
+        return self.async_show_form(
+            step_id="user", data_schema=vol.Schema({
+              vol.Required("username"): str,
+              vol.Required("password"): str
+            })
+        )
   
     async def async_step_device(self, formdata):
         if formdata is not None:
@@ -49,6 +50,9 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
                 title=self._discovered_devices[deviceid], data={}
             )
 
+        if not self._discovered_devices:
+            return self.async_abort(reason="no_devices_found")
+        
         return self.async_show_form(
             step_id="device",
             data_schema=vol.Schema(
