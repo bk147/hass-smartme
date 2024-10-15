@@ -53,8 +53,7 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="no_devices_found")
         
         return self.async_show_form(
-            step_id="device",
-            data_schema=vol.Schema(
+            step_id="device", data_schema=vol.Schema(
                 {vol.Required("deviceid"): vol.In(self._discovered_devices)}
             ),
         )
