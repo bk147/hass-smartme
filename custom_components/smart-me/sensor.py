@@ -44,7 +44,7 @@ class ExampleSensor(SensorEntity):
         self._callbacks = set()
         
         self._attr_unique_id = f"{self._deviceid}_device1"
-        self._attr_name = f"{self._devicename} Device1"
+        self._attr_name = f"Device {self._deviceid}"
         self._state = 25
 
     @property
