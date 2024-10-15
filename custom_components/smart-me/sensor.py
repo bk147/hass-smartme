@@ -48,7 +48,7 @@ async def async_setup_entry(
 class SmartmeSensor(CoordinatorEntity, SensorEntity):
     """Implementation of a sensor."""
 
-    def __init__(self, coordinator: ExampleCoordinator, device: Device) -> None:
+    def __init__(self, coordinator: SmartmeCoordinator, device: Device) -> None:
         """Initialise sensor."""
         super().__init__(coordinator)
         self.device = device
