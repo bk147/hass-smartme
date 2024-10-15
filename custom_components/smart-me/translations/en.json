@@ -12,7 +12,6 @@
         }
       },
       "device": {
-        "title": "Smart-me Setup",
         "description": "Select one of the available device ids.",
         "data": {
           "deviceid": "Device ID"
