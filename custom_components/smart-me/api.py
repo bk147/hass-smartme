@@ -42,7 +42,7 @@ class API:
 
     def __init__(self, deviceid: str, username: str, password: str) -> None:
         """Initialise."""
-        self.deviceid = host
+        self.deviceid = deviceid
         self.username = username
         self.password = password
         self.connected: bool = False
