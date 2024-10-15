@@ -36,24 +36,26 @@ class ExampleSensor(SensorEntity):
 
     def __init__(self, hub) -> None:
         """Initialize a sensor."""
-        self._callbacks = set()
-        self._value = 25
+        self._deviceid = hub.deviceid
+        self._username = hub.username
+        self._password = hub.password
 
-        self.hub = hub
-        self.name = "Test Name"
-        self.firmware_version = f"0.0.1"
-        self.model = "Test Model"
+        self._callbacks = set()
+        
+        self._attr_unique_id = f"{self._deviceid}_device1"
+        self._attr_name = f"{self._deviceid} Test1"
+        self._state = 25
 
     @property
     def device_info(self):
         """Return information to link this entity with the correct device."""
-        return {"identifiers": {(DOMAIN, self.hub._deviceid)}}
+        return {"identifiers": {(DOMAIN, self._deviceid)}}
         
     # The value of this sensor.
     @property
     def state(self):
         """Return the state of the sensor."""
-        return self._value
+        return self._state
     
     # This property is important to let HA know if this entity is online or not.
     # If an entity is offline (return False), the UI will refelect this.
