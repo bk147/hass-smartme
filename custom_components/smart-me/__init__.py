@@ -1,41 +1,37 @@
+"""The Detailed Hello World Push integration."""
+
 from __future__ import annotations
 
-import asyncio
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from aiohttp import ClientError, ClientResponseError, ClientSession, BasicAuth
 from homeassistant.const import Platform
 
-from .const import DOMAIN
+from . import hub
 
+# List of platforms to support. There should be a matching .py file for each,
+# eg <cover.py> and <sensor.py>
 PLATFORMS = [Platform.SENSOR]
 
-class CloudAccount:
-    def __init__(self, hass: HomeAssistant, deviceid: str, username: str, password: str) -> None:
-        """Init dummy hub."""
-        self.deviceid = deviceid
-        self.username = username
-        self.password = password
+type HubConfigEntry = ConfigEntry[hub.Hub]
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up device from a config entry."""
-    deviceid = entry.unique_id
-    username = entry.data.get("username")
-    password = entry.data.get("password")
-    assert deviceid is not None
-    
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = CloudAccount(hass, deviceid=deviceid, username=username, password=password)
+async def async_setup_entry(hass: HomeAssistant, entry: HubConfigEntry) -> bool:
+    """Set up Hello World from a config entry."""
+    # Store an instance of the "connecting" class that does the work of speaking
+    # with your actual devices.
+    entry.runtime_data = hub.Hub(hass, entry.data["host"])
+
+    # This creates each HA object for each platform your device requires.
+    # It's done by calling the `async_setup_entry` function in each platform module.
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
+    # This is called when an entry/configured device is to be removed. The class
+    # needs to unload itself, and remove callbacks. See the classes for further
+    # details
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    if unload_ok:
-        hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
