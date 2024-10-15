@@ -75,8 +75,9 @@ class ExampleSensor(SensorEntity):
         # The opposite of async_added_to_hass. Remove any registered call backs here.
         self._callbacks.discard(callback)
 
-    async def publish_updates(self) -> None:
+    async def _updateState(self, state) -> None:
         """Schedule call all registered callbacks."""
+        self._state = state
         for callback in self._callbacks:
             callback()
 
