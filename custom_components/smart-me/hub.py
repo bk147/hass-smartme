@@ -17,12 +17,12 @@ class Hub:
 
     manufacturer = "Demonstration Corp"
 
-    def __init__(self, hass: HomeAssistant, host: str) -> None:
+    def __init__(self, hass: HomeAssistant, deviceid: str, username: str, password: str) -> None:
         """Init dummy hub."""
-        self._host = host
+        self._host = deviceid
         self._hass = hass
-        self._name = host
-        self._id = host.lower()
+        self._name = deviceid
+        self._id = deviceid.lower()
         self.rollers = [
             Roller(f"{self._id}_1", f"{self._name} 1", self),
             Roller(f"{self._id}_2", f"{self._name} 2", self),
