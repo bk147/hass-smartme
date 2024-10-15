@@ -3,6 +3,12 @@ from homeassistant.config_entries import ConfigFlow
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from aiohttp import ClientError, ClientResponseError, ClientSession, BasicAuth
 
+from homeassistant.const import (
+    CONF_DEVICE_ID,
+    CONF_USERNAME,
+    CONF_PASSWORD,
+)
+
 from .const import DOMAIN
 
 class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -18,8 +24,8 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, formdata):
         if formdata is not None:
             websession = async_get_clientsession(self.hass)
-            self._username = formdata['username']
-            self._password = formdata['password']
+            self._username = formdata[CONF_USERNAME]
+            self._password = formdata[CONF_PASSWORD]
             try:
                 async with websession.get(url="https://api.smart-me.com/Devices", auth=BasicAuth(self._username, self._password)) as response:
                     response.raise_for_status()
@@ -36,18 +42,19 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
         
         return self.async_show_form(
             step_id="user", data_schema=vol.Schema({
-              vol.Required("username"): str,
-              vol.Required("password"): str
+              vol.Required(CONF_USERNAME): str,
+              vol.Required(CONF_PASSWORD): str
             })
         )
   
     async def async_step_device(self, formdata):
         if formdata is not None:
-            deviceid = formdata['deviceid']
+            deviceid = formdata[CONF_DEVICE_ID]
             await self.async_set_unique_id(deviceid, raise_on_progress=False)
             self._abort_if_unique_id_configured()
-            self._data['username'] = self._username
-            self._data['password'] = self._password
+            self._data[CONF_DEVICE_ID] = deviceid
+            self._data[CONF_USERNAME] = self._username
+            self._data[CONF_PASSWORD] = self._password
             return self.async_create_entry(title=self._discovered_devices[deviceid], data=self._data)
 
         if not self._discovered_devices:
@@ -55,6 +62,6 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
         
         return self.async_show_form(
             step_id="device", data_schema=vol.Schema(
-                {vol.Required("deviceid"): vol.In(self._discovered_devices)}
+                {vol.Required(CONF_DEVICE_ID): vol.In(self._discovered_devices)}
             ),
         )
