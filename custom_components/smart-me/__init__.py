@@ -10,12 +10,6 @@ from homeassistant.const import Platform
 # eg <cover.py> and <sensor.py>
 PLATFORMS = [Platform.SENSOR]
 
-class Hub:
-    def __init__(self, deviceid: str, username: str, password: str) -> None:
-        self.deviceid = deviceid
-        self.username = username
-        self.password= password
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up a config entry."""
     deviceid = entry.unique_id
