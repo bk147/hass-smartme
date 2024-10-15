@@ -1,0 +1,16 @@
+{
+  "title": "Smart-me power meter",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart-me Setup",
+        "description": "The credentials will be used to pull the data from the server.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "deviceid": "Device ID"
+        }
+      }
+    }
+  }
+}
