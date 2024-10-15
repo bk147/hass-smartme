@@ -76,6 +76,7 @@ class BatterySensor(SensorBase):
         self._attr_name = f"Device {self.deviceid}"
 
         self._state = 25
+        
 
     # The value of this sensor. As this is a DEVICE_CLASS_BATTERY, this value must be
     # the battery level as a percentage (between 0 and 100)
