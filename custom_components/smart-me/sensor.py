@@ -1,86 +1,128 @@
+"""Interfaces with the Integration 101 Template api sensors."""
+
+import logging
+
 from homeassistant.components.sensor import (
     SensorDeviceClass,
+    SensorEntity,
+    SensorStateClass,
 )
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import Entity
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import UnitOfTemperature
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from .api import Device, DeviceType
 from .const import DOMAIN
+from .coordinator import SmartmeCoordinator
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
-    hub = hass.data[DOMAIN][config_entry.entry_id]
-    async_add_entities([BatterySensor(hub)])
+_LOGGER = logging.getLogger(__name__)
 
-class SensorBase(Entity):
-    """Base representation of a Sensor."""
 
-    should_poll = False
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+):
+    """Set up the Sensors."""
+    # This gets the data update coordinator from hass.data as specified in your __init__.py
+    coordinator: SmartmeCoordinator = hass.data[DOMAIN][
+        config_entry.entry_id
+    ].coordinator
 
-    def __init__(self, hub):
-        """Initialize the sensor."""
-        self._deviceid = hub.deviceid
-        self._username = hub.username
-        self._password = hub.password
-        self._callbacks = set()
+    # Enumerate all the sensors in your data value from your DataUpdateCoordinator and add an instance of your sensor class
+    # to a list for each one.
+    # This maybe different in your specific case, depending on how your data is structured
+    sensors = [
+        SmartmeSensor(coordinator, device)
+        for device in coordinator.data.devices
+        if device.device_type == DeviceType.TEMP_SENSOR
+    ]
 
-    # To link this entity to the cover device, this property must return an
-    # identifiers value matching that used in the device, but no other information such
-    # as name. If name is returned, this entity will then also become a device in the
-    # HA UI.
+    # Create the sensors.
+    async_add_entities(sensors)
+
+
+class SmartmeSensor(CoordinatorEntity, SensorEntity):
+    """Implementation of a sensor."""
+
+    def __init__(self, coordinator: ExampleCoordinator, device: Device) -> None:
+        """Initialise sensor."""
+        super().__init__(coordinator)
+        self.device = device
+        self.device_id = device.device_id
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Update sensor with latest data from coordinator."""
+        # This method is called by your DataUpdateCoordinator when a successful update runs.
+        self.device = self.coordinator.get_device_by_id(
+            self.device.device_type, self.device_id
+        )
+        _LOGGER.debug("Device: %s", self.device)
+        self.async_write_ha_state()
+
     @property
-    def device_info(self):
-        """Return information to link this entity with the correct device."""
-        return {"identifiers": {(DOMAIN, self._deviceid)}}
+    def device_class(self) -> str:
+        """Return device class."""
+        # https://developers.home-assistant.io/docs/core/entity/sensor/#available-device-classes
+        return SensorDeviceClass.TEMPERATURE
 
-    # This property is important to let HA know if this entity is online or not.
-    # If an entity is offline (return False), the UI will refelect this.
     @property
-    def available(self) -> bool:
-        """Return True if hub is available."""
-        return True
+    def device_info(self) -> DeviceInfo:
+        """Return device information."""
+        # Identifiers are what group entities into the same device.
+        # If your device is created elsewhere, you can just specify the indentifiers parameter.
+        # If your device connects via another device, add via_device parameter with the indentifiers of that device.
+        return DeviceInfo(
+            name=f"ExampleDevice{self.device.device_id}",
+            manufacturer="ACME Manufacturer",
+            model="Door&Temp v1",
+            sw_version="1.0",
+            identifiers={
+                (
+                    DOMAIN,
+                    f"{self.coordinator.data.controller_name}-{self.device.device_id}",
+                )
+            },
+        )
 
-    async def async_added_to_hass(self):
-        """Run when this Entity has been added to HA."""
-        # Sensors should also register callbacks to HA when their state changes
-        self._callbacks.add(self.async_write_ha_state)
-
-    async def async_will_remove_from_hass(self):
-        """Entity being removed from hass."""
-        # The opposite of async_added_to_hass. Remove any registered call backs here.
-        self._callbacks.discard(self.async_write_ha_state)
-
-
-class BatterySensor(SensorBase):
-    """Representation of a Sensor."""
-
-    # The class of this device. Note the value should come from the homeassistant.const
-    # module. More information on the available devices classes can be seen here:
-    # https://developers.home-assistant.io/docs/core/entity/sensor
-    device_class = SensorDeviceClass.BATTERY
-
-    # The unit of measurement for this entity. As it's a DEVICE_CLASS_BATTERY, this
-    # should be PERCENTAGE. A number of units are supported by HA, for some
-    # examples, see:
-    # https://developers.home-assistant.io/docs/core/entity/sensor#available-device-classes
-    _attr_unit_of_measurement = PERCENTAGE
-
-    def __init__(self, base):
-        """Initialize the sensor."""
-        super().__init__(base)
-
-        # As per the sensor, this must be a unique value within this domain. This is done
-        # by using the device ID, and appending "_battery"
-        self._attr_unique_id = f"{self.deviceid}_battery"
-
-        # The name of the entity
-        self._attr_name = f"Device {self.deviceid}"
-
-        self._state = 25
-        
-
-    # The value of this sensor. As this is a DEVICE_CLASS_BATTERY, this value must be
-    # the battery level as a percentage (between 0 and 100)
     @property
-    def state(self):
-        """Return the state of the sensor."""
-        return self._state
+    def name(self) -> str:
+        """Return the name of the sensor."""
+        return self.device.name
+
+    @property
+    def native_value(self) -> int | float:
+        """Return the state of the entity."""
+        # Using native value and native unit of measurement, allows you to change units
+        # in Lovelace and HA will automatically calculate the correct value.
+        return float(self.device.state)
+
+    @property
+    def native_unit_of_measurement(self) -> str | None:
+        """Return unit of temperature."""
+        return UnitOfTemperature.CELSIUS
+
+    @property
+    def state_class(self) -> str | None:
+        """Return state class."""
+        # https://developers.home-assistant.io/docs/core/entity/sensor/#available-state-classes
+        return SensorStateClass.MEASUREMENT
+
+    @property
+    def unique_id(self) -> str:
+        """Return unique id."""
+        # All entities must have a unique id.  Think carefully what you want this to be as
+        # changing it later will cause HA to create new entities.
+        return f"{DOMAIN}-{self.device.device_unique_id}"
+
+    @property
+    def extra_state_attributes(self):
+        """Return the extra state attributes."""
+        # Add any additional attributes you want on your sensor.
+        attrs = {}
+        attrs["extra_info"] = "Extra Info"
+        return attrs
