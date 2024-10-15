@@ -17,17 +17,21 @@ class Hub:
         self.password= password
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Hello World from a config entry."""
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = Hub(hass, entry.unique_id, entry.data["username"], entry.data["password"])
+    """Set up a config entry."""
+    deviceid = entry.unique_id
+    assert deviceid is not None
+    username = entry.data["username"]
+    password = entry.data["password"]
+    
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = Hub(hass, deviceid=deviceid, username=username, password=password)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    # This is called when an entry/configured device is to be removed. The class
-    # needs to unload itself, and remove callbacks. See the classes for further
-    # details
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
+        hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
