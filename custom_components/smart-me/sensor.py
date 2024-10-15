@@ -15,6 +15,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
+from . import hub
+
 from . import HubConfigEntry
 from .const import DOMAIN
 
@@ -33,18 +35,24 @@ class ExampleSensor(SensorEntity):
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, hub) -> None:
-        """Initialize an bluetooth light."""
+        """Initialize a sensor."""
         self._deviceid = hub.deviceid
         self._username = hub.username
         self._password = hub.password
         self._callbacks = set()
         self._value = 25
 
+        self.hub = hub
+        self.name = "Test Name"
+        self.firmware_version = f"0.0.{random.randint(1, 9)}"
+        self.model = "Test Model"
+
     @property
     def device_info(self):
         """Return information to link this entity with the correct device."""
         return {"identifiers": {(DOMAIN, self._deviceid)}}
-
+        
+    # The value of this sensor.
     @property
     def state(self):
         """Return the state of the sensor."""
@@ -54,8 +62,8 @@ class ExampleSensor(SensorEntity):
     # If an entity is offline (return False), the UI will refelect this.
     @property
     def available(self) -> bool:
-        """Return True if hub is available."""
-        return True
+        """Return True if roller and hub is available."""
+        return self._roller.online and self._roller.hub.online
 
     async def async_added_to_hass(self):
         """Run when this Entity has been added to HA."""
