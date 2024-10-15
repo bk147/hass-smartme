@@ -17,7 +17,7 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
         self._discovered_devices: dict[str, str] = {}
   
     async def async_step_user(self, formdata):
-        if userdata is not None:
+        if formdata is not None:
             self._username = formdata['username']
             self._password = formdata['password']
             try:
