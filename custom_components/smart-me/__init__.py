@@ -13,9 +13,9 @@ from .const import DOMAIN
 PLATFORMS = [Platform.SENSOR]
 
 class Hub:
-    def __init__(self, hass: HomeAssistant, address: str, deviceid: str, username: str, password: str) -> None:
+    def __init__(self, hass: HomeAssistant, deviceid: str, username: str, password: str) -> None:
         """Init dummy hub."""
-        self._address = address
+        self._deviceid = deviceid
         self._username = username
         self._password = password
 
