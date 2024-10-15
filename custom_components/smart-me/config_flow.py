@@ -48,10 +48,7 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
             self._abort_if_unique_id_configured()
             self._data['username'] = self._username
             self._data['password'] = self._password
-            return self.async_create_entry(
-                title=self._discovered_devices[deviceid],
-                data=self._data
-            )
+            return self.async_create_entry(title=self._discovered_devices[deviceid], data=self._data)
 
         if not self._discovered_devices:
             return self.async_abort(reason="no_devices_found")
