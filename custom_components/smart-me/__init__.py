@@ -19,8 +19,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: HubConfigEntry) -> bool:
     """Set up Hello World from a config entry."""
     # Store an instance of the "connecting" class that does the work of speaking
     # with your actual devices.
-    entry.runtime_data = hub.Hub(hass, entry.data["deviceid"])
-
+    entry.runtime_data = hub.Hub(hass, entry.unique_id, entry.data["username"], entry.data["password"])
+    
     # This creates each HA object for each platform your device requires.
     # It's done by calling the `async_setup_entry` function in each platform module.
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
