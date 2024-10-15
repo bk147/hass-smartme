@@ -46,9 +46,9 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
             deviceid = formdata['deviceid']
             await self.async_set_unique_id(deviceid, raise_on_progress=False)
             self._abort_if_unique_id_configured()
+            self._data['devicename'] = self._discovered_devices[deviceid];
             self._data['username'] = self._username
             self._data['password'] = self._password
-            self._data['name'] = self._discovered_devices[deviceid];
             return self.async_create_entry(title=self._discovered_devices[deviceid], data=self._data)
 
         if not self._discovered_devices:
