@@ -25,7 +25,9 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
                     response.raise_for_status()
                     response_data = await response.json()
                     for device in response_data:
-                         self._discovered_devices[device.Id] = device.Name
+                        device_id = device['Id']
+                        device_name = device['Name']
+                        self._discovered_devices[device_id] = device_name
             except ClientResponseError as exc:
                 return self.async_abort(reason="authentication")
             except ClientError as exc:
@@ -40,7 +42,12 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
   
     async def async_step_device(self, formdata):
         if formdata is not None:
-            return self.async_abort(reason="unknown")
+            deviceid = formdata['deviceid']
+            await self.async_set_unique_id(deviceid, raise_on_progress=False)
+            self._abort_if_unique_id_configured()
+            return self.async_create_entry(
+                title=self._discovered_devices[deviceid], data={}
+            )
 
         return self.async_show_form(
             step_id="device",
