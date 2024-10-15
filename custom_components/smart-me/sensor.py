@@ -41,7 +41,7 @@ class ExampleSensor(SensorEntity):
 
         self.hub = hub
         self.name = "Test Name"
-        self.firmware_version = f"0.0.{random.randint(1, 9)}"
+        self.firmware_version = f"0.0.1"
         self.model = "Test Model"
 
     @property
