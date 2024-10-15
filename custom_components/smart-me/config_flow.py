@@ -28,7 +28,9 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
                         device_id = device['Id']
                         device_name = device['Name']
                         self._discovered_devices[device_id] = device_name
-                    return
+                    return self.async_create_entry(
+                        title=self._username, data={}
+                    )
             except ClientResponseError as exc:
                 return self.async_abort(reason="authentication")
             except ClientError as exc:
