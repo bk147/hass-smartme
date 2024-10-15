@@ -19,7 +19,7 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
   
     async def async_step_user(self, info):
         if info is not None:
-            return self.async_abort(reason="test")
+            return self.async_abort(reason="connenction")
             pass  # TODO: process info
 
         return self.async_show_form(
