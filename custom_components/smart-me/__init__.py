@@ -12,7 +12,7 @@ from .const import DOMAIN
 
 PLATFORMS = [Platform.SENSOR]
 
-class Hub:
+class CloudAccount:
     def __init__(self, hass: HomeAssistant, deviceid: str, username: str, password: str) -> None:
         """Init dummy hub."""
         self.deviceid = deviceid
@@ -27,7 +27,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     password = entry.data.get("password")
     assert deviceid is not None
     
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = Hub(hass, deviceid=deviceid, username=username, password=password)
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = CloudAccount(hass, deviceid=deviceid, username=username, password=password)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
