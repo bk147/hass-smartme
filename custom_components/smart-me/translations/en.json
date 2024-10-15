@@ -12,7 +12,7 @@
         }
       }
     },
-    "error": {
+    "abort": {
       "connenction": "Error during connection.",
       "authentication": "Error during authentication.",
       "unknown": "Unknown Error"
