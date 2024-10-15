@@ -6,6 +6,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from aiohttp import ClientError, ClientResponseError, ClientSession, BasicAuth
+from homeassistant.const import Platform
 
 from .const import DOMAIN
 
