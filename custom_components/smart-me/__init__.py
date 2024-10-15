@@ -6,6 +6,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.const import Platform
 
+from .const import DOMAIN
+
 class Hub:
     def __init__(self, deviceid: str, username: str, password: str) -> None:
         self.deviceid = deviceid
