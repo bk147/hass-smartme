@@ -37,13 +37,14 @@ class ExampleSensor(SensorEntity):
     def __init__(self, hub) -> None:
         """Initialize a sensor."""
         self._deviceid = hub.deviceid
+        self._devicename = hub.devicename
         self._username = hub.username
         self._password = hub.password
 
         self._callbacks = set()
         
         self._attr_unique_id = f"{self._deviceid}_device1"
-        self._attr_name = f"{self._deviceid} Test1"
+        self._attr_name = f"{self._devicename} Device1"
         self._state = 25
 
     @property
