@@ -54,7 +54,7 @@ class API:
 
     def connect(self) -> bool:
         """Connect to api."""
-        if self.username == "test" and self.password == "1234":
+        if self.username != "test":
             self.connected = True
             return True
         raise APIAuthError("Error connecting to api. Invalid username or password.")
