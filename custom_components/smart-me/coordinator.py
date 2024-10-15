@@ -4,16 +4,15 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    CONF_HOST,
-    CONF_PASSWORD,
-    CONF_SCAN_INTERVAL,
+    CONF_DEVICE_ID,
     CONF_USERNAME,
+    CONF_PASSWORD,
 )
 from homeassistant.core import DOMAIN, HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import API, APIAuthError, Device, DeviceType
-from .const import DEFAULT_SCAN_INTERVAL
+from .const import SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,14 +34,12 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         """Initialize coordinator."""
 
         # Set variables from values entered in config flow setup
-        self.host = config_entry.data[CONF_HOST]
-        self.user = config_entry.data[CONF_USERNAME]
-        self.pwd = config_entry.data[CONF_PASSWORD]
+        self.deviceid = config_entry.data[CONF_DEVICE_ID]
+        self.username = config_entry.data[CONF_USERNAME]
+        self.password = config_entry.data[CONF_PASSWORD]
 
         # set variables from options.  You need a default here incase options have not been set
-        self.poll_interval = config_entry.options.get(
-            CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
-        )
+        self.poll_interval = SCAN_INTERVAL
 
         # Initialise DataUpdateCoordinator
         super().__init__(
@@ -57,7 +54,7 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         )
 
         # Initialise your api here
-        self.api = API(host=self.host, user=self.user, pwd=self.pwd)
+        self.api = API(deviceid=self.deviceid, username=self.username, password=self.password)
 
     async def async_update_data(self):
         """Fetch data from API endpoint.
