@@ -14,7 +14,7 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
             username = userdata['username']
             password = userdata['password']
             try:
-                async with websession.get(url=url, auth=BasicAuth(username, password)) as response:
+                async with websession.get(url="https://api.smart-me.com/Devices", auth=BasicAuth(username, password)) as response:
                     response.raise_for_status()
                     print(response.json())
             except ClientResponseError as exc:
