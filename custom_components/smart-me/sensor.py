@@ -85,9 +85,9 @@ class SensorActivePower(CoordinatorEntity):
         """Return the extra state attributes."""
         # Add any additional attributes you want on your sensor.
         attrs = {}
-        attrs["ActivePowerL1"] = round(self.coordinator.data.ActivePowerL1 * 1000, 0)
-        attrs["ActivePowerL2"] = round(self.coordinator.data.ActivePowerL2 * 1000, 0)
-        attrs["ActivePowerL3"] = round(self.coordinator.data.ActivePowerL3 * 1000, 0)
+        attrs["L1"] = round(self.coordinator.data.ActivePowerL1 * 1000, 0)
+        attrs["L2"] = round(self.coordinator.data.ActivePowerL2 * 1000, 0)
+        attrs["L3"] = round(self.coordinator.data.ActivePowerL3 * 1000, 0)
         return attrs
 
 class SensorVoltage(CoordinatorEntity):
@@ -129,9 +129,9 @@ class SensorVoltage(CoordinatorEntity):
         """Return the extra state attributes."""
         # Add any additional attributes you want on your sensor.
         attrs = {}
-        attrs["VoltageL1"] = round(self.coordinator.data.VoltageL1, 1)
-        attrs["VoltageL2"] = round(self.coordinator.data.VoltageL2, 1)
-        attrs["VoltageL3"] = round(self.coordinator.data.VoltageL3, 1)
+        attrs["L1"] = round(self.coordinator.data.VoltageL1, 1)
+        attrs["L2"] = round(self.coordinator.data.VoltageL2, 1)
+        attrs["L3"] = round(self.coordinator.data.VoltageL3, 1)
         return attrs
 
 class SensorCounterReading(CoordinatorEntity):
@@ -177,6 +177,6 @@ class SensorCounterReading(CoordinatorEntity):
         """Return the extra state attributes."""
         # Add any additional attributes you want on your sensor.
         attrs = {}
-        attrs["CounterReadingImport"] = self.coordinator.data.CounterReadingImport
-        attrs["CounterReadingExport"] = self.coordinator.data.CounterReadingExport
+        attrs["Import"] = self.coordinator.data.CounterReadingImport
+        attrs["Export"] = self.coordinator.data.CounterReadingExport
         return attrs
