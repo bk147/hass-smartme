@@ -73,4 +73,4 @@ class SmartmeCoordinator(DataUpdateCoordinator):
             raise UpdateFailed(f"Error communicating with API: {err}") from err
 
         # What is returned here is stored in self.data by the DataUpdateCoordinator
-        return SmartmeAPIData(self.api.controller_name)
+        return SmartmeAPIData("TEST DATA")
