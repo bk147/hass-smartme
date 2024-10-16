@@ -51,9 +51,6 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         self.username = config_entry.data[CONF_USERNAME]
         self.password = config_entry.data[CONF_PASSWORD]
 
-        # set variables from options.  You need a default here incase options have not been set
-        self.poll_interval = SCAN_INTERVAL
-
         # Initialise DataUpdateCoordinator
         super().__init__(
             hass,
@@ -62,8 +59,7 @@ class SmartmeCoordinator(DataUpdateCoordinator):
             # Method to call on every update interval.
             update_method=self.async_update_data,
             # Polling interval. Will only be polled if there are subscribers.
-            # Using config option here but you can just use a value.
-            update_interval=timedelta(seconds=self.poll_interval),
+            update_interval=timedelta(seconds=10),
         )
 
         # Initialise your api here
