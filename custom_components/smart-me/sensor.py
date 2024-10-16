@@ -89,10 +89,15 @@ class SmartmeDeviceSensor(CoordinatorEntity):
     @property
     def state(self):
         """Return the state of the sensor."""
+        return 30
+    
+    @property
+    def available(self) -> bool:
+        """Return True if roller and hub is available."""
         return True
 
     @property
-    def native_unit_of_measurement(self) -> str | None:
+    def unit_of_measurement(self) -> str | None:
         """Return unit of temperature."""
         return UnitOfTemperature.CELSIUS
 
@@ -156,14 +161,19 @@ class SmartmeSensor1(CoordinatorEntity):
     def name(self) -> str:
         """Return the name of the sensor."""
         return "Test Sensor 1"
-
+    
     @property
     def state(self):
         """Return the state of the sensor."""
+        return 30
+    
+    @property
+    def available(self) -> bool:
+        """Return True if roller and hub is available."""
         return True
 
     @property
-    def native_unit_of_measurement(self) -> str | None:
+    def unit_of_measurement(self) -> str | None:
         """Return unit of temperature."""
         return UnitOfTemperature.CELSIUS
 
