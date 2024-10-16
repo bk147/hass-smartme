@@ -46,6 +46,10 @@ async def async_setup_entry(
 class SmartmeDeviceSensor(CoordinatorEntity):
     """Implementation of a sensor."""
 
+    unit_of_measurement = UnitOfTemperature.CELSIUS
+    state_class = SensorStateClass.MEASUREMENT
+    device_class = SensorDeviceClass.TEMPERATURE
+    
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
         """Initialise sensor."""
         super().__init__(coordinator)
@@ -57,12 +61,6 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         """Update sensor with latest data from coordinator."""
         # This method is called by your DataUpdateCoordinator when a successful update runs.
         self.async_write_ha_state()
-
-    @property
-    def device_class(self) -> str:
-        """Return device class."""
-        # https://developers.home-assistant.io/docs/core/entity/sensor/#available-device-classes
-        return SensorDeviceClass.TEMPERATURE
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -89,18 +87,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
     @property
     def state(self):
         """Return the state of the sensor."""
-        return 30
-
-    @property
-    def unit_of_measurement(self) -> str | None:
-        """Return unit of temperature."""
-        return UnitOfTemperature.CELSIUS
-
-    @property
-    def state_class(self) -> str | None:
-        """Return state class."""
-        # https://developers.home-assistant.io/docs/core/entity/sensor/#available-state-classes
-        return SensorStateClass.MEASUREMENT
+        return 5
 
     @property
     def unique_id(self) -> str:
@@ -120,7 +107,6 @@ class SmartmeDeviceSensor(CoordinatorEntity):
 class SmartmeSensor1(CoordinatorEntity):
     """Implementation of a sensor."""
 
-    name = "Test Sensor 1"
     unit_of_measurement = UnitOfTemperature.CELSIUS
     state_class = SensorStateClass.MEASUREMENT
     device_class = SensorDeviceClass.TEMPERATURE
@@ -150,11 +136,16 @@ class SmartmeSensor1(CoordinatorEntity):
                 )
             },
         )
+
+    @property
+    def name(self) -> str:
+        """Return the name of the sensor."""
+        return "Test Sensor 1"
     
     @property
     def state(self):
         """Return the state of the sensor."""
-        return 30
+        return 99
 
     @property
     def unique_id(self) -> str:
