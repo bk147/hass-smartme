@@ -64,7 +64,7 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         so entities can quickly look up their data.
         """
         try:
-            devicedata = await self.hass.async_add_executor_job(self.api.pullDeviceData)
+            devicedata = await self.api.pullDeviceData()
         except APIAuthError as err:
             _LOGGER.error(err)
             raise UpdateFailed(err) from err
