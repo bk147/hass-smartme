@@ -49,6 +49,8 @@ class SmartmeDeviceSensor(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
         """Initialise sensor."""
         super().__init__(coordinator)
+        self.deviceid = f"{device-self.coordinator.deviceid}"
+        self.name = f"{Device device-self.coordinator.name}"
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -69,7 +71,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         # If your device is created elsewhere, you can just specify the indentifiers parameter.
         # If your device connects via another device, add via_device parameter with the indentifiers of that device.
         return DeviceInfo(
-            name=self.coordinator.name,
+            name=self.name,
             manufacturer="smart-me AG",
             identifiers={
                 (
@@ -107,7 +109,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         """Return unique id."""
         # All entities must have a unique id.  Think carefully what you want this to be as
         # changing it later will cause HA to create new entities.
-        return f"{DOMAIN}-{self.coordinator.deviceid}-1"
+        return f"{DOMAIN}-{self.deviceid}-1"
 
     @property
     def extra_state_attributes(self):
@@ -123,6 +125,7 @@ class SmartmeSensor1(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
         """Initialise sensor."""
         super().__init__(coordinator)
+        self.deviceid = f"{device-self.coordinator.deviceid}"
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -179,7 +182,7 @@ class SmartmeSensor1(CoordinatorEntity):
         """Return unique id."""
         # All entities must have a unique id.  Think carefully what you want this to be as
         # changing it later will cause HA to create new entities.
-        return f"{DOMAIN}-{self.coordinator.deviceid}-2"
+        return f"{DOMAIN}-{self.deviceid}-2"
 
     @property
     def extra_state_attributes(self):
