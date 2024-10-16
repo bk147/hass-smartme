@@ -20,11 +20,6 @@ class API:
         self._session = async_get_clientsession(hass)
         self.connected: bool = False
 
-    @property
-    def controller_name(self) -> str:
-        """Return the name of the controller."""
-        return self.deviceid
-
     async def pullDeviceData(self):
         """get device data from api."""
         try:
