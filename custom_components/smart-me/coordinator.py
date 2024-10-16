@@ -9,11 +9,11 @@ from homeassistant.const import (
     CONF_USERNAME,
     CONF_PASSWORD,
 )
-from homeassistant.core import DOMAIN, HomeAssistant
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import API, APIAuthError, Device, DeviceType
-from .const import SCAN_INTERVAL
+from .const import DOMAIN, SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
