@@ -8,7 +8,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
+from homeassistant.const import UnitOfPower
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -35,37 +35,28 @@ async def async_setup_entry(
     # to a list for each one.
     # This maybe different in your specific case, depending on how your data is structured
     sensors = [
-        SmartmeDeviceSensor(coordinator),
-        SmartmeSensor1(coordinator),
+        SensorActivePower(coordinator),
     ]
 
     # Create the sensors.
     async_add_entities(sensors)
 
-class SmartmeDeviceSensor(CoordinatorEntity):
-    """Implementation of a sensor."""
-
-    name = "Test Device Sensor"
-    unit_of_measurement = UnitOfTemperature.CELSIUS
+class SensorActivePower(CoordinatorEntity):
+    
+    name = "ActivePower"
+    unit_of_measurement = UnitOfPower.WATT
     state_class = SensorStateClass.MEASUREMENT
-    device_class = SensorDeviceClass.TEMPERATURE
+    device_class = SensorDeviceClass.POWER
     
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
-        """Initialise sensor."""
         super().__init__(coordinator)
 
     @callback
     def _handle_coordinator_update(self) -> None:
-        """Update sensor with latest data from coordinator."""
-        # This method is called by your DataUpdateCoordinator when a successful update runs.
         self.async_write_ha_state()
 
     @property
     def device_info(self) -> DeviceInfo:
-        """Return device information."""
-        # Identifiers are what group entities into the same device.
-        # If your device is created elsewhere, you can just specify the indentifiers parameter.
-        # If your device connects via another device, add via_device parameter with the indentifiers of that device.
         return DeviceInfo(
             name=self.coordinator.devicename,
             manufacturer="smart-me AG",
@@ -79,14 +70,11 @@ class SmartmeDeviceSensor(CoordinatorEntity):
     
     @property
     def state(self):
-        """Return the state of the sensor."""
-        return self.coordinator.data.ActivePower
+        return round(self.coordinator.data.ActivePower * 1000, 0)
 
     @property
     def unique_id(self) -> str:
         """Return unique id."""
-        # All entities must have a unique id.  Think carefully what you want this to be as
-        # changing it later will cause HA to create new entities.
         return f"{DOMAIN}-{self.coordinator.deviceid}-1"
 
     @property
@@ -94,58 +82,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         """Return the extra state attributes."""
         # Add any additional attributes you want on your sensor.
         attrs = {}
-        attrs["extra_info"] = "Extra Info 1"
-        return attrs
-
-class SmartmeSensor1(CoordinatorEntity):
-    """Implementation of a sensor."""
-
-    name = "Test Device Sensor"
-    unit_of_measurement = UnitOfTemperature.CELSIUS
-    state_class = SensorStateClass.MEASUREMENT
-    device_class = SensorDeviceClass.TEMPERATURE
-    
-    def __init__(self, coordinator: SmartmeCoordinator) -> None:
-        """Initialise sensor."""
-        super().__init__(coordinator)
-
-    @callback
-    def _handle_coordinator_update(self) -> None:
-        """Update sensor with latest data from coordinator."""
-        # This method is called by your DataUpdateCoordinator when a successful update runs.
-        self.async_write_ha_state()
-
-    @property
-    def device_info(self) -> DeviceInfo:
-        """Return device information."""
-        # Identifiers are what group entities into the same device.
-        # If your device is created elsewhere, you can just specify the indentifiers parameter.
-        # If your device connects via another device, add via_device parameter with the indentifiers of that device.
-        return DeviceInfo(
-            identifiers={
-                (
-                    DOMAIN,
-                    self.coordinator.deviceid,
-                )
-            },
-        )
-    
-    @property
-    def state(self):
-        """Return the state of the sensor."""
-        return 99
-
-    @property
-    def unique_id(self) -> str:
-        """Return unique id."""
-        # All entities must have a unique id.  Think carefully what you want this to be as
-        # changing it later will cause HA to create new entities.
-        return f"{DOMAIN}-{self.coordinator.deviceid}-2"
-
-    @property
-    def extra_state_attributes(self):
-        """Return the extra state attributes."""
-        # Add any additional attributes you want on your sensor.
-        attrs = {}
-        attrs["extra_info"] = "Extra Info 2"
+        attrs["ActivePowerL1"] = round(self.coordinator.data.ActivePowerL1 * 1000, 0)
+        attrs["ActivePowerL2"] = round(self.coordinator.data.ActivePowerL2 * 1000, 0)
+        attrs["ActivePowerL3"] = round(self.coordinator.data.ActivePowerL3 * 1000, 0)
         return attrs
