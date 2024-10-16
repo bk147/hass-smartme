@@ -71,7 +71,6 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         return DeviceInfo(
             name=self.coordinator.name,
             manufacturer="smart-me AG",
-            serial_number=self.coordinator.serial,,
             identifiers={
                 (
                     DOMAIN,
