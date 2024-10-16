@@ -55,7 +55,7 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         )
 
         # Initialise your api here
-        self.api = API(hass=self.hass, deviceid=self.deviceid, username=self.username, password=self.password)
+        self.api = API(hass, deviceid=self.deviceid, username=self.username, password=self.password)
 
     async def async_update_data(self):
         """Fetch data from API endpoint.
