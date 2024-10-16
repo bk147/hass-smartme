@@ -80,7 +80,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
     @property
     def state(self):
         """Return the state of the sensor."""
-        return 5
+        return coordinator.data.ActivePower
 
     @property
     def unique_id(self) -> str:
