@@ -18,6 +18,7 @@ class API:
         self.username = username
         self.password = password
         self._session = async_get_clientsession(hass)
+        self.connected: bool = False
 
     @property
     def controller_name(self) -> str:
@@ -30,6 +31,7 @@ class API:
             async with self._session.get(url=f"https://api.smart-me.com/Devices/{self.deviceid}", auth=BasicAuth(self.username, self.password)) as response:
                 response.raise_for_status()
                 response_data = await response.json()
+                self.connected = true
                 return response_data
         except ClientResponseError as exc:
             raise APIAuthError("Error connecting to api. Invalid username or password.")
