@@ -1,3 +1,2 @@
 DOMAIN = "smartme"
 
-SCAN_INTERVAL = 10
