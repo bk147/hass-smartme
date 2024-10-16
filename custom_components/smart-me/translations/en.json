@@ -7,14 +7,13 @@
         "description": "The credentials will be used to pull the data from the server.",
         "data": {
           "username": "Username",
-          "password": "Password",
-          "deviceid": "Device ID"
+          "password": "Password"
         }
       },
       "device": {
         "description": "Select one of the available device ids.",
         "data": {
-          "deviceid": "Device ID"
+          "device_id": "Device ID"
         }
       }
     },
