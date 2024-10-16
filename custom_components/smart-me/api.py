@@ -9,26 +9,6 @@ from homeassistant.core import HomeAssistant
 
 _LOGGER = logging.getLogger(__name__)
 
-
-class DeviceType(StrEnum):
-    """Device types."""
-
-    TEMP_SENSOR = "temp_sensor"
-    DOOR_SENSOR = "door_sensor"
-    OTHER = "other"
-
-
-@dataclass
-class Device:
-    """API device."""
-
-    device_id: int
-    device_unique_id: str
-    device_type: DeviceType
-    name: str
-    state: int | bool
-
-
 class API:
     """Class for example API."""
 
