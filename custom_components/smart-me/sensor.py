@@ -53,10 +53,6 @@ class SensorActivePower(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
         super().__init__(coordinator)
 
-    @callback
-    def _handle_coordinator_update(self) -> None:
-        self.async_write_ha_state()
-
     @property
     def device_info(self) -> DeviceInfo:
         return DeviceInfo(
@@ -99,10 +95,6 @@ class SensorVoltage(CoordinatorEntity):
     
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
         super().__init__(coordinator)
-
-    @callback
-    def _handle_coordinator_update(self) -> None:
-        self.async_write_ha_state()
 
     @property
     def device_info(self) -> DeviceInfo:
