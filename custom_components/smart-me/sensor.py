@@ -69,10 +69,9 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         # If your device is created elsewhere, you can just specify the indentifiers parameter.
         # If your device connects via another device, add via_device parameter with the indentifiers of that device.
         return DeviceInfo(
-            name=f"ExampleDevice{self.coordinator.deviceid}",
-            manufacturer="ACME Manufacturer",
-            model="Door&Temp v1",
-            sw_version="1.0",
+            name=self.coordinator.name,
+            manufacturer="smart-me AG",
+            serial_number=self.coordinator.serial,,
             identifiers={
                 (
                     DOMAIN,
