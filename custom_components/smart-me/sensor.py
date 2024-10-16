@@ -50,7 +50,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         """Initialise sensor."""
         super().__init__(coordinator)
         self._deviceid = f"device-{coordinator.deviceid}"
-        self._name = f"Device {coordinator.name}"
+        self._devicename = f"Device {coordinator.devicename}"
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -71,7 +71,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         # If your device is created elsewhere, you can just specify the indentifiers parameter.
         # If your device connects via another device, add via_device parameter with the indentifiers of that device.
         return DeviceInfo(
-            name=self._name,
+            name=self._devicename,
             manufacturer="smart-me AG",
             identifiers={
                 (
@@ -85,13 +85,11 @@ class SmartmeDeviceSensor(CoordinatorEntity):
     def name(self) -> str:
         """Return the name of the sensor."""
         return "Test Device Sensor"
-
+    
     @property
-    def native_value(self) -> int | float:
-        """Return the state of the entity."""
-        # Using native value and native unit of measurement, allows you to change units
-        # in Lovelace and HA will automatically calculate the correct value.
-        return float(1)
+    def state(self):
+        """Return the state of the sensor."""
+        return True
 
     @property
     def native_unit_of_measurement(self) -> str | None:
@@ -160,11 +158,9 @@ class SmartmeSensor1(CoordinatorEntity):
         return "Test Sensor 1"
 
     @property
-    def native_value(self) -> int | float:
-        """Return the state of the entity."""
-        # Using native value and native unit of measurement, allows you to change units
-        # in Lovelace and HA will automatically calculate the correct value.
-        return float(1)
+    def state(self):
+        """Return the state of the sensor."""
+        return True
 
     @property
     def native_unit_of_measurement(self) -> str | None:
