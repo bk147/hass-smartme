@@ -22,7 +22,6 @@ class SmartmeAPIData:
     """Class to hold api data."""
 
     controller_name: str
-    devices: list[Device]
 
 
 class SmartmeCoordinator(DataUpdateCoordinator):
@@ -65,7 +64,7 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         try:
             if not self.api.connected:
                 await self.hass.async_add_executor_job(self.api.connect)
-            devices = await self.hass.async_add_executor_job(self.api.get_devices)
+            """devices = await self.hass.async_add_executor_job(self.api.get_devices) LOAD DATA HERE"""
         except APIAuthError as err:
             _LOGGER.error(err)
             raise UpdateFailed(err) from err
@@ -74,18 +73,4 @@ class SmartmeCoordinator(DataUpdateCoordinator):
             raise UpdateFailed(f"Error communicating with API: {err}") from err
 
         # What is returned here is stored in self.data by the DataUpdateCoordinator
-        return SmartmeAPIData(self.api.controller_name, devices)
-
-    def get_device_by_id(
-        self, device_type: DeviceType, device_id: int
-    ) -> Device | None:
-        """Return device by device id."""
-        # Called by the binary sensors and sensors to get their updated data from self.data
-        try:
-            return [
-                device
-                for device in self.data.devices
-                if device.device_type == device_type and device.device_id == device_id
-            ][0]
-        except IndexError:
-            return None
+        return SmartmeAPIData(self.api.controller_name)
