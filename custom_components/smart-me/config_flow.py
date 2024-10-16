@@ -5,6 +5,7 @@ from aiohttp import ClientError, ClientResponseError, ClientSession, BasicAuth
 
 from homeassistant.const import (
     CONF_DEVICE_ID,
+    CONF_FRIENDLY_NAME,
     CONF_USERNAME,
     CONF_PASSWORD,
 )
@@ -53,6 +54,7 @@ class SmartmeConfigFlow(ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(deviceid, raise_on_progress=False)
             self._abort_if_unique_id_configured()
             self._data[CONF_DEVICE_ID] = deviceid
+            self._data[CONF_FRIENDLY_NAME] = self._discovered_devices[deviceid]
             self._data[CONF_USERNAME] = self._username
             self._data[CONF_PASSWORD] = self._password
             return self.async_create_entry(title=self._discovered_devices[deviceid], data=self._data)
