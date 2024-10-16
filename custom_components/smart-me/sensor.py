@@ -36,6 +36,8 @@ async def async_setup_entry(
     # This maybe different in your specific case, depending on how your data is structured
     sensors = [
         SensorActivePower(coordinator),
+        SensorVoltage(coordinator),
+        SensorCounterReading(coordinator),
     ]
 
     # Create the sensors.
@@ -58,6 +60,7 @@ class SensorActivePower(CoordinatorEntity):
     @property
     def device_info(self) -> DeviceInfo:
         return DeviceInfo(
+            """ generate new device """
             name=self.coordinator.devicename,
             manufacturer="smart-me AG",
             identifiers={
