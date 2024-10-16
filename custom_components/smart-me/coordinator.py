@@ -22,7 +22,7 @@ _LOGGER = logging.getLogger(__name__)
 class SmartmeAPIData:
     """Class to hold api data."""
 
-    controller_name: str
+    ActivePower: float
 
 
 class SmartmeCoordinator(DataUpdateCoordinator):
@@ -65,12 +65,10 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         """
         try:
             devicedata = await self.api.pullDeviceData()
+            return SmartmeAPIData(ActivePower=devicedata['ActivePower'])
         except APIAuthError as err:
             _LOGGER.error(err)
             raise UpdateFailed(err) from err
         except Exception as err:
             # This will show entities as unavailable by raising UpdateFailed exception
             raise UpdateFailed(f"Error communicating with API: {err}") from err
-
-        # What is returned here is stored in self.data by the DataUpdateCoordinator
-        return SmartmeAPIData("TEST DATA")
