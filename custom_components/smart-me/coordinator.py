@@ -35,7 +35,7 @@ class SmartmeCoordinator(DataUpdateCoordinator):
 
         # Set variables from values entered in config flow setup
         self.deviceid = config_entry.data[CONF_DEVICE_ID]
-        self.name = config_entry.data[CONF_FRIENDLY_NAME]
+        self.devicename = config_entry.data[CONF_FRIENDLY_NAME]
         self.username = config_entry.data[CONF_USERNAME]
         self.password = config_entry.data[CONF_PASSWORD]
 
