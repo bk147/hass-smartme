@@ -92,7 +92,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         """Return the state of the entity."""
         # Using native value and native unit of measurement, allows you to change units
         # in Lovelace and HA will automatically calculate the correct value.
-        return 99
+        return 30.0
 
     @property
     def native_unit_of_measurement(self) -> str | None:
@@ -158,14 +158,14 @@ class SmartmeSensor1(CoordinatorEntity):
     @property
     def name(self) -> str:
         """Return the name of the sensor."""
-        return "Test Sensor"
+        return "Test Sensor 1"
 
     @property
     def native_value(self) -> int | float:
         """Return the state of the entity."""
         # Using native value and native unit of measurement, allows you to change units
         # in Lovelace and HA will automatically calculate the correct value.
-        return 99
+        return 30.0
 
     @property
     def native_unit_of_measurement(self) -> str | None:
