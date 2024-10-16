@@ -3,6 +3,10 @@ from enum import StrEnum
 import logging
 from random import choice, randrange
 
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from aiohttp import ClientError, ClientResponseError, ClientSession, BasicAuth
+from homeassistant.core import HomeAssistant
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -28,29 +32,29 @@ class Device:
 class API:
     """Class for example API."""
 
-    def __init__(self, deviceid: str, username: str, password: str) -> None:
+    def __init__(self, hass: HomeAssistant, deviceid: str, username: str, password: str) -> None:
         """Initialise."""
         self.deviceid = deviceid
         self.username = username
         self.password = password
-        self.connected: bool = False
+        self._session = async_get_clientsession(hass)
 
     @property
     def controller_name(self) -> str:
         """Return the name of the controller."""
         return self.deviceid
 
-    def connect(self) -> bool:
-        """Connect to api."""
-        if self.username != "test":
-            self.connected = True
-            return True
-        raise APIAuthError("Error connecting to api. Invalid username or password.")
-
-    def disconnect(self) -> bool:
-        """Disconnect from api."""
-        self.connected = False
-        return True
+    def pullDeviceData(self) -> bool:
+        """get device data from api."""
+        try:
+            async with websession.get(url=f"https://api.smart-me.com/Devices/{self.deviceid}", auth=BasicAuth(self.username, self.password)) as response:
+                response.raise_for_status()
+                response_data = await response.json()
+                return True
+        except ClientResponseError as exc:
+            raise APIAuthError("Error connecting to api. Invalid username or password.")
+        except ClientError as exc:
+            raise APIConnectionError("Error connecting to api.")
 
 
 class APIAuthError(Exception):
