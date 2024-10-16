@@ -27,7 +27,7 @@ class API:
     async def pullDeviceData(self):
         """get device data from api."""
         try:
-            async with websession.get(url=f"https://api.smart-me.com/Devices/{self.deviceid}", auth=BasicAuth(self.username, self.password)) as response:
+            async with self._session.get(url=f"https://api.smart-me.com/Devices/{self.deviceid}", auth=BasicAuth(self.username, self.password)) as response:
                 response.raise_for_status()
                 response_data = await response.json()
                 return response_data
