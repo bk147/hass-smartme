@@ -8,7 +8,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfPower
+from homeassistant.const import UnitOfPower, UnitOfElectricPotential, UnitOfEnergy
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -75,7 +75,7 @@ class SensorActivePower(CoordinatorEntity):
     @property
     def unique_id(self) -> str:
         """Return unique id."""
-        return f"{DOMAIN}-{self.coordinator.deviceid}-1"
+        return f"{DOMAIN}-{self.coordinator.deviceid}-{self.name}"
 
     @property
     def extra_state_attributes(self):
@@ -85,4 +85,91 @@ class SensorActivePower(CoordinatorEntity):
         attrs["ActivePowerL1"] = round(self.coordinator.data.ActivePowerL1 * 1000, 0)
         attrs["ActivePowerL2"] = round(self.coordinator.data.ActivePowerL2 * 1000, 0)
         attrs["ActivePowerL3"] = round(self.coordinator.data.ActivePowerL3 * 1000, 0)
+        return attrs
+
+class SensorVoltage(CoordinatorEntity):
+    
+    name = "Voltage"
+    unit_of_measurement = UnitOfElectricPotential.VOLT
+    state_class = SensorStateClass.MEASUREMENT
+    device_class = SensorDeviceClass.VOLTAGE
+    
+    def __init__(self, coordinator: SmartmeCoordinator) -> None:
+        super().__init__(coordinator)
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self.async_write_ha_state()
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        return DeviceInfo(
+            identifiers={
+                (
+                    DOMAIN,
+                    self.coordinator.deviceid,
+                )
+            },
+        )
+    
+    @property
+    def state(self):
+        return round(self.coordinator.data.Voltage, 1)
+
+    @property
+    def unique_id(self) -> str:
+        """Return unique id."""
+        return f"{DOMAIN}-{self.coordinator.deviceid}-{self.name}"
+
+    @property
+    def extra_state_attributes(self):
+        """Return the extra state attributes."""
+        # Add any additional attributes you want on your sensor.
+        attrs = {}
+        attrs["VoltageL1"] = round(self.coordinator.data.VoltageL1, 1)
+        attrs["VoltageL2"] = round(self.coordinator.data.VoltageL2, 1)
+        attrs["VoltageL3"] = round(self.coordinator.data.VoltageL3, 1)
+        return attrs
+
+class SensorCounterReading(CoordinatorEntity):
+    
+    name = "CounterReading"
+    unit_of_measurement = UnitOfEnergy.UnitOfEnergy
+    state_class = SensorStateClass.TOTAL_INCREASING
+    device_class = SensorDeviceClass.ENERGY
+    
+    def __init__(self, coordinator: SmartmeCoordinator) -> None:
+        super().__init__(coordinator)
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self.async_write_ha_state()
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        return DeviceInfo(
+            identifiers={
+                (
+                    DOMAIN,
+                    self.coordinator.deviceid,
+                )
+            },
+        )
+    
+    @property
+    def state(self):
+        return self.coordinator.data.CounterReading
+
+    @property
+    def unique_id(self) -> str:
+        """Return unique id."""
+        return f"{DOMAIN}-{self.coordinator.deviceid}-{self.name}"
+
+    @property
+    def extra_state_attributes(self):
+        """Return the extra state attributes."""
+        # Add any additional attributes you want on your sensor.
+        attrs = {}
+        attrs["CounterReadingImport"] = self.coordinator.data.CounterReadingImport
+        attrs["CounterReadingExport"] = self.coordinator.data.CounterReadingExport
         return attrs
