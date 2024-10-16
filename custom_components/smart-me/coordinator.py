@@ -23,6 +23,9 @@ class SmartmeAPIData:
     """Class to hold api data."""
 
     ActivePower: float
+    ActivePowerL1: float
+    ActivePowerL2: float
+    ActivePowerL3: float
 
 
 class SmartmeCoordinator(DataUpdateCoordinator):
@@ -65,7 +68,12 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         """
         try:
             devicedata = await self.api.pullDeviceData()
-            return SmartmeAPIData(ActivePower=devicedata['ActivePower'])
+            return SmartmeAPIData(
+                ActivePower=devicedata['ActivePower'],
+                ActivePowerL1=devicedata['ActivePowerL1'],
+                ActivePowerL2=devicedata['ActivePowerL2'],
+                ActivePowerL3=devicedata['ActivePowerL3']
+            )
         except APIAuthError as err:
             _LOGGER.error(err)
             raise UpdateFailed(err) from err
