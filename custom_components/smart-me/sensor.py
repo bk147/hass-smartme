@@ -79,6 +79,8 @@ async def async_setup_entry(
 
 class SensorActivePower(CoordinatorEntity):
     
+    _attr_should_poll = False
+    
     _attr_has_entity_name = True
     _attr_unit_of_measurement = UnitOfPower.WATT
     _attr_device_class = SensorDeviceClass.POWER
@@ -101,6 +103,8 @@ class SensorActivePower(CoordinatorEntity):
 
 class SensorVoltage(CoordinatorEntity):
     
+    _attr_should_poll = False
+    
     _attr_has_entity_name = True
     _attr_unit_of_measurement = UnitOfElectricPotential.VOLT
     _attr_device_class = SensorDeviceClass.VOLTAGE
@@ -122,6 +126,8 @@ class SensorVoltage(CoordinatorEntity):
         return round(self.coordinator.data.device_data[self.translation_key], 1)
 
 class SensorCounterReading(CoordinatorEntity):
+    
+    _attr_should_poll = False
     
     _attr_has_entity_name = True
     _attr_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
