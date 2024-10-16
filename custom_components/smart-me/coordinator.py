@@ -27,6 +27,15 @@ class SmartmeAPIData:
     ActivePowerL2: float
     ActivePowerL3: float
 
+    Voltage: float
+    VoltageL1: float
+    VoltageL2: float
+    VoltageL3: float
+
+    CounterReading: int
+    CounterReadingImport: int
+    CounterReadingExport: int
+
 
 class SmartmeCoordinator(DataUpdateCoordinator):
     """My coordinator."""
@@ -72,7 +81,14 @@ class SmartmeCoordinator(DataUpdateCoordinator):
                 ActivePower=devicedata['ActivePower'],
                 ActivePowerL1=devicedata['ActivePowerL1'],
                 ActivePowerL2=devicedata['ActivePowerL2'],
-                ActivePowerL3=devicedata['ActivePowerL3']
+                ActivePowerL3=devicedata['ActivePowerL3'],
+                Voltage=devicedata['Voltage'],
+                VoltageL1=devicedata['VoltageL1'],
+                VoltageL2=devicedata['VoltageL2'],
+                VoltageL3=devicedata['VoltageL3'],
+                CounterReading=devicedata['CounterReading'],
+                CounterReadingImport=devicedata['CounterReadingImport'],
+                CounterReadingExport=devicedata['CounterReadingExport']
             )
         except APIAuthError as err:
             _LOGGER.error(err)
