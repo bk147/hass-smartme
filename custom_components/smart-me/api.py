@@ -26,7 +26,7 @@ class API:
             async with self._session.get(url=f"https://api.smart-me.com/Devices/{self.deviceid}", auth=BasicAuth(self.username, self.password)) as response:
                 response.raise_for_status()
                 response_data = await response.json()
-                self.connected = true
+                self.connected = True
                 return response_data
         except ClientResponseError as exc:
             raise APIAuthError("Error connecting to api. Invalid username or password.")
