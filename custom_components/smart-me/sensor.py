@@ -46,6 +46,7 @@ async def async_setup_entry(
 class SmartmeDeviceSensor(CoordinatorEntity):
     """Implementation of a sensor."""
 
+    name = "Test Device Sensor"
     unit_of_measurement = UnitOfTemperature.CELSIUS
     state_class = SensorStateClass.MEASUREMENT
     device_class = SensorDeviceClass.TEMPERATURE
@@ -76,11 +77,6 @@ class SmartmeDeviceSensor(CoordinatorEntity):
                 )
             },
         )
-
-    @property
-    def name(self) -> str:
-        """Return the name of the sensor."""
-        return "Test Device Sensor"
     
     @property
     def state(self):
@@ -105,6 +101,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
 class SmartmeSensor1(CoordinatorEntity):
     """Implementation of a sensor."""
 
+    name = "Test Device Sensor"
     unit_of_measurement = UnitOfTemperature.CELSIUS
     state_class = SensorStateClass.MEASUREMENT
     device_class = SensorDeviceClass.TEMPERATURE
@@ -133,11 +130,6 @@ class SmartmeSensor1(CoordinatorEntity):
                 )
             },
         )
-
-    @property
-    def name(self) -> str:
-        """Return the name of the sensor."""
-        return "Test Sensor 1"
     
     @property
     def state(self):
