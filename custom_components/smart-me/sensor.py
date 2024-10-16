@@ -120,7 +120,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         attrs["extra_info"] = "Extra Info"
         return attrs
 
-class SmartmeSensor(CoordinatorEntity):
+class SmartmeSensor1(CoordinatorEntity):
     """Implementation of a sensor."""
 
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
