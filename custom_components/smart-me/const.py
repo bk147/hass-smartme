@@ -1,3 +1,4 @@
 DOMAIN = "smartme"
 
-SCAN_INTERVAL = 60
+SCAN_INTERVAL: Final = 60
+CONF_SERIAL: Final = "serial"
