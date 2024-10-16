@@ -1,0 +1,63 @@
+{
+  "title": "Smart-me Stromzähler",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart-me Setup",
+        "description": "Trage deine smart-me.com Zugangsdaten ein.",
+        "data": {
+          "username": "Benutzername",
+          "password": "Kennwort"
+        }
+      },
+      "device": {
+        "description": "Wähle eins der Geräte aus.",
+        "data": {
+          "device_id": "Gerät"
+        }
+      }
+    },
+    "abort": {
+      "connenction": "Fehler bei dem Verbindungsaufbau.",
+      "authentication": "Fehler bei der Authentifizierung.",
+      "unknown": "Unbekannter Fehler."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "ActivePower": {
+        "name": "Stromverbrauch"
+      },
+      "ActivePowerL1": {
+        "name": "Stromverbrauch (L1)"
+      },
+      "ActivePowerL2": {
+        "name": "Stromverbrauch (L2)"
+      },
+      "ActivePowerL3": {
+        "name": "Stromverbrauch (L3)"
+      },
+      "Voltage": {
+        "name": "Spannung"
+      },
+      "VoltageL1": {
+        "name": "Spannung (L1)"
+      },
+      "VoltageL2": {
+        "name": "Spannung (L2)"
+      },
+      "VoltageL3": {
+        "name": "Spannung (L3)"
+      },
+      "CounterReading": {
+        "name": "Stromzähler"
+      },
+      "CounterReadingImport": {
+        "name": "Stromzähler (Import)"
+      },
+      "CounterReadingExport": {
+        "name": "Stromzähler (Export)"
+      }
+    }
+  }
+}
