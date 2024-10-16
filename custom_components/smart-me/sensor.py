@@ -39,39 +39,39 @@ async def async_setup_entry(
             name=coordinator.devicename,
             manufacturer="smart-me AG",
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="ActivePower"),
+        ), key="ActivePower"),
         SensorActivePower(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="ActivePowerL1", visible=False),
+        ), key="ActivePowerL1", visible=False),
         SensorActivePower(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="ActivePowerL2", visible=False),
+        ), key="ActivePowerL2", visible=False),
         SensorActivePower(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="ActivePowerL3", visible=False),
+        ), key="ActivePowerL3", visible=False),
         
         SensorVoltage(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="Voltage"),
+        ), key="Voltage"),
         SensorVoltage(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="VoltageL1", visible=False),
+        ), key="VoltageL1", visible=False),
         SensorVoltage(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="VoltageL2", visible=False),
+        ), key="VoltageL2", visible=False),
         SensorVoltage(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="VoltageL3", visible=False),
+        ), key="VoltageL3", visible=False),
         
         SensorCounterReading(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="CounterReading"),
+        ), key="CounterReading"),
         SensorCounterReading(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="CounterReadingImport", visible=False),
+        ), key="CounterReadingImport", visible=False),
         SensorCounterReading(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
-        ), name="CounterReadingExport", visible=False),
+        ), key="CounterReadingExport", visible=False),
     ]
 
     # Create the sensors.
@@ -79,15 +79,16 @@ async def async_setup_entry(
 
 class SensorActivePower(CoordinatorEntity):
     
-    unit_of_measurement = UnitOfPower.WATT
-    state_class = SensorStateClass.MEASUREMENT
-    device_class = SensorDeviceClass.POWER
+    _attr_has_entity_name = True
+    _attr_unit_of_measurement = UnitOfPower.WATT
+    _attr_device_class = SensorDeviceClass.POWER
+    _attr_state_class = SensorStateClass.MEASUREMENT
     
-    def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, name: str, visible: bool = True) -> None:
+    def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
         self.device_info = deviceinfo
-        self.name = name
-        self.unique_id = f"{self.coordinator.deviceid}-{self.name}"
+        self.translation_key = key
+        self.unique_id = f"{coordinator.deviceid}-{key}"
         self.entity_registry_enabled_default = visible
 
     @callback
@@ -96,19 +97,20 @@ class SensorActivePower(CoordinatorEntity):
     
     @property
     def state(self):
-        return round(self.coordinator.data.device_data[self.name] * 1000, 0)
+        return round(self.coordinator.data.device_data[self.translation_key] * 1000, 0)
 
 class SensorVoltage(CoordinatorEntity):
     
-    unit_of_measurement = UnitOfElectricPotential.VOLT
-    state_class = SensorStateClass.MEASUREMENT
-    device_class = SensorDeviceClass.VOLTAGE
+    _attr_has_entity_name = True
+    _attr_unit_of_measurement = UnitOfElectricPotential.VOLT
+    _attr_device_class = SensorDeviceClass.VOLTAGE
+    _attr_state_class = SensorStateClass.MEASUREMENT
     
-    def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, name: str, visible: bool = True) -> None:
+    def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
         self.device_info = deviceinfo
-        self.name = name
-        self.unique_id = f"{self.coordinator.deviceid}-{self.name}"
+        self.translation_key = key
+        self.unique_id = f"{coordinator.deviceid}-{key}"
         self.entity_registry_enabled_default = visible
 
     @callback
@@ -117,19 +119,20 @@ class SensorVoltage(CoordinatorEntity):
     
     @property
     def state(self):
-        return round(self.coordinator.data.device_data[self.name], 1)
+        return round(self.coordinator.data.device_data[self.translation_key], 1)
 
 class SensorCounterReading(CoordinatorEntity):
     
-    unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
-    state_class = SensorStateClass.TOTAL_INCREASING
-    device_class = SensorDeviceClass.ENERGY
+    _attr_has_entity_name = True
+    _attr_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
+    _attr_device_class = SensorDeviceClass.ENERGY
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     
-    def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, name: str, visible: bool = True) -> None:
+    def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
         self.device_info = deviceinfo
-        self.name = name
-        self.unique_id = f"{self.coordinator.deviceid}-{self.name}"
+        self.translation_key = key
+        self.unique_id = f"{coordinator.deviceid}-{key}"
         self.entity_registry_enabled_default = visible
 
     @callback
@@ -138,4 +141,4 @@ class SensorCounterReading(CoordinatorEntity):
     
     @property
     def state(self):
-        return self.coordinator.data.device_data[self.name]
+        return self.coordinator.data.device_data[self.translation_key]
