@@ -73,7 +73,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
             identifiers={
                 (
                     DOMAIN,
-                    self.coordinator.data.controller_name,
+                    self.coordinator.deviceid,
                 )
             },
         )
@@ -126,7 +126,7 @@ class SmartmeSensor1(CoordinatorEntity):
             identifiers={
                 (
                     DOMAIN,
-                    self.coordinator.data.controller_name,
+                    self.coordinator.deviceid,
                 )
             },
         )
