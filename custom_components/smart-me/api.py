@@ -24,7 +24,7 @@ class API:
         """Return the name of the controller."""
         return self.deviceid
 
-    def pullDeviceData(self) -> bool:
+    async def pullDeviceData(self):
         """get device data from api."""
         try:
             async with websession.get(url=f"https://api.smart-me.com/Devices/{self.deviceid}", auth=BasicAuth(self.username, self.password)) as response:
