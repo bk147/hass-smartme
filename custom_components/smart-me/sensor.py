@@ -36,9 +36,7 @@ async def async_setup_entry(
     # to a list for each one.
     # This maybe different in your specific case, depending on how your data is structured
     sensors = [
-        SmartmeSensor(coordinator, device)
-        for device in coordinator.data.devices
-        if device.device_type == DeviceType.TEMP_SENSOR
+        SmartmeSensor(coordinator)
     ]
 
     # Create the sensors.
@@ -48,20 +46,15 @@ async def async_setup_entry(
 class SmartmeSensor(CoordinatorEntity, SensorEntity):
     """Implementation of a sensor."""
 
-    def __init__(self, coordinator: SmartmeCoordinator, device: Device) -> None:
+    def __init__(self, coordinator: SmartmeCoordinator) -> None:
         """Initialise sensor."""
         super().__init__(coordinator)
-        self.device = device
-        self.device_id = device.device_id
+        self.device_id = {self.deviceid}-abc123"
 
     @callback
     def _handle_coordinator_update(self) -> None:
         """Update sensor with latest data from coordinator."""
         # This method is called by your DataUpdateCoordinator when a successful update runs.
-        self.device = self.coordinator.get_device_by_id(
-            self.device.device_type, self.device_id
-        )
-        _LOGGER.debug("Device: %s", self.device)
         self.async_write_ha_state()
 
     @property
@@ -77,14 +70,14 @@ class SmartmeSensor(CoordinatorEntity, SensorEntity):
         # If your device is created elsewhere, you can just specify the indentifiers parameter.
         # If your device connects via another device, add via_device parameter with the indentifiers of that device.
         return DeviceInfo(
-            name=f"ExampleDevice{self.device.device_id}",
+            name=f"ExampleDevice{self.device_id}",
             manufacturer="ACME Manufacturer",
             model="Door&Temp v1",
             sw_version="1.0",
             identifiers={
                 (
                     DOMAIN,
-                    f"{self.coordinator.data.controller_name}-{self.device.device_id}",
+                    f"{self.coordinator.data.controller_name}-{self.device_id}",
                 )
             },
         )
@@ -92,14 +85,14 @@ class SmartmeSensor(CoordinatorEntity, SensorEntity):
     @property
     def name(self) -> str:
         """Return the name of the sensor."""
-        return self.device.name
+        return "Test Device"
 
     @property
     def native_value(self) -> int | float:
         """Return the state of the entity."""
         # Using native value and native unit of measurement, allows you to change units
         # in Lovelace and HA will automatically calculate the correct value.
-        return float(self.device.state)
+        return True
 
     @property
     def native_unit_of_measurement(self) -> str | None:
@@ -117,7 +110,7 @@ class SmartmeSensor(CoordinatorEntity, SensorEntity):
         """Return unique id."""
         # All entities must have a unique id.  Think carefully what you want this to be as
         # changing it later will cause HA to create new entities.
-        return f"{DOMAIN}-{self.device.device_unique_id}"
+        return f"{DOMAIN}-{self.device_id}"
 
     @property
     def extra_state_attributes(self):
