@@ -50,9 +50,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     cancel_update_listener = config_entry.add_update_listener(_async_update_listener)
 
     # Add the coordinator and update listener to hass data to make
-    # accessible throughout your integration
-    # Note: this will change on HA2024.6 to save on the config entry.
-    hass.data[DOMAIN][config_entry.entry_id] = RuntimeData(
+    config_entry.runtime_data = = RuntimeData(
         coordinator, cancel_update_listener
     )
 
@@ -68,16 +66,6 @@ async def _async_update_listener(hass: HomeAssistant, config_entry):
     """Handle config options update."""
     # Reload the integration when the options change.
     await hass.config_entries.async_reload(config_entry.entry_id)
-
-
-async def async_remove_config_entry_device(
-    hass: HomeAssistant, config_entry: ConfigEntry, device_entry: DeviceEntry
-) -> bool:
-    """Delete device if selected from UI."""
-    # Adding this function shows the delete device option in the UI.
-    # Remove this function if you do not want that option.
-    # You may need to do some checks here before allowing devices to be removed.
-    return True
 
 
 async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
