@@ -22,19 +22,7 @@ _LOGGER = logging.getLogger(__name__)
 class SmartmeAPIData:
     """Class to hold api data."""
 
-    ActivePower: float
-    ActivePowerL1: float
-    ActivePowerL2: float
-    ActivePowerL3: float
-
-    Voltage: float
-    VoltageL1: float
-    VoltageL2: float
-    VoltageL3: float
-
-    CounterReading: int
-    CounterReadingImport: int
-    CounterReadingExport: int
+    device_data: dict[str, any]
 
 
 class SmartmeCoordinator(DataUpdateCoordinator):
@@ -73,19 +61,7 @@ class SmartmeCoordinator(DataUpdateCoordinator):
         """
         try:
             devicedata = await self.api.pullDeviceData()
-            return SmartmeAPIData(
-                ActivePower=devicedata['ActivePower'],
-                ActivePowerL1=devicedata['ActivePowerL1'],
-                ActivePowerL2=devicedata['ActivePowerL2'],
-                ActivePowerL3=devicedata['ActivePowerL3'],
-                Voltage=devicedata['Voltage'],
-                VoltageL1=devicedata['VoltageL1'],
-                VoltageL2=devicedata['VoltageL2'],
-                VoltageL3=devicedata['VoltageL3'],
-                CounterReading=devicedata['CounterReading'],
-                CounterReadingImport=devicedata['CounterReadingImport'],
-                CounterReadingExport=devicedata['CounterReadingExport']
-            )
+            return SmartmeAPIData(device_data=devicedata)
         except APIAuthError as err:
             _LOGGER.error(err)
             raise UpdateFailed(err) from err
