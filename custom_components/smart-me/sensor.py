@@ -66,11 +66,15 @@ class SensorActivePower(CoordinatorEntity):
                 )
             },
         )
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self.async_write_ha_state()
     
     @property
     def state(self):
         return round(self.coordinator.data.ActivePower * 1000, 0)
-
+    
     @property
     def unique_id(self) -> str:
         """Return unique id."""
@@ -106,6 +110,10 @@ class SensorVoltage(CoordinatorEntity):
                 )
             },
         )
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self.async_write_ha_state()
     
     @property
     def state(self):
@@ -150,6 +158,10 @@ class SensorCounterReading(CoordinatorEntity):
                 )
             },
         )
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self.async_write_ha_state()
     
     @property
     def state(self):
