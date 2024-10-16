@@ -49,8 +49,8 @@ class SmartmeDeviceSensor(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
         """Initialise sensor."""
         super().__init__(coordinator)
-        self.deviceid = f"device-{self.coordinator.deviceid}"
-        self.name = f"Device {self.coordinator.name}"
+        self.deviceid = f"device-{coordinator.deviceid}"
+        self.name = f"Device {coordinator.name}"
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -125,7 +125,7 @@ class SmartmeSensor1(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator) -> None:
         """Initialise sensor."""
         super().__init__(coordinator)
-        self.deviceid = f"device-{self.coordinator.deviceid}"
+        self.deviceid = f"device-{coordinator.deviceid}"
 
     @callback
     def _handle_coordinator_update(self) -> None:
