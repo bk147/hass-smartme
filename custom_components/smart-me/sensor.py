@@ -56,7 +56,7 @@ class SensorActivePower(CoordinatorEntity):
     @property
     def device_info(self) -> DeviceInfo:
         return DeviceInfo(
-            """ generate new device """
+            #only generate device once!
             name=self.coordinator.devicename,
             manufacturer="smart-me AG",
             identifiers={
