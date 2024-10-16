@@ -69,7 +69,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         # If your device is created elsewhere, you can just specify the indentifiers parameter.
         # If your device connects via another device, add via_device parameter with the indentifiers of that device.
         return DeviceInfo(
-            name=f"ExampleDevice{self.coordinator.device_id}",
+            name=f"ExampleDevice{self.coordinator.deviceid}",
             manufacturer="ACME Manufacturer",
             model="Door&Temp v1",
             sw_version="1.0",
@@ -109,7 +109,7 @@ class SmartmeDeviceSensor(CoordinatorEntity):
         """Return unique id."""
         # All entities must have a unique id.  Think carefully what you want this to be as
         # changing it later will cause HA to create new entities.
-        return f"{DOMAIN}-{self.coordinator.device_id}-1"
+        return f"{DOMAIN}-{self.coordinator.deviceid}-1"
 
     @property
     def extra_state_attributes(self):
@@ -181,7 +181,7 @@ class SmartmeSensor1(CoordinatorEntity):
         """Return unique id."""
         # All entities must have a unique id.  Think carefully what you want this to be as
         # changing it later will cause HA to create new entities.
-        return f"{DOMAIN}-{self.coordinator.device_id}-2"
+        return f"{DOMAIN}-{self.coordinator.deviceid}-2"
 
     @property
     def extra_state_attributes(self):
