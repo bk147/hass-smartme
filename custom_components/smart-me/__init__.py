@@ -50,7 +50,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     cancel_update_listener = config_entry.add_update_listener(_async_update_listener)
 
     # Add the coordinator and update listener to hass data to make
-    config_entry.runtime_data = = RuntimeData(
+    config_entry.runtime_data = RuntimeData(
         coordinator, cancel_update_listener
     )
 
@@ -74,7 +74,7 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
     # If you have created any custom services, they need to be removed here too.
 
     # Remove the config options update listener
-    hass.data[DOMAIN][config_entry.entry_id].cancel_update_listener()
+    config_entry.runtime_data.cancel_update_listener()
 
     # Unload platforms
     unload_ok = await hass.config_entries.async_unload_platforms(
