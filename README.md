@@ -10,6 +10,9 @@
 
 The Blitzer.de Home Assistant Custom Integration allows you to integrate your smart-me.com power meter with your Home Assistant setup.
 
+![image](https://github.com/user-attachments/assets/59fa5ca8-c3a2-4480-bafa-dcb1605f2442)
+
+
 ## Installation
 
 ### HACS (recommended)
