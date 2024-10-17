@@ -27,7 +27,7 @@ This integration is available in HACS (Home Assistant Community Store).
 6. Add following URL to the repository `https://github.com/timniklas/hacs_smartme`.
 7. Select Integration as category.
 8. Click the "ADD" button
-9. Search for "Divera"
+9. Search for "Smart-me"
 10. Click the "Download" button
 
 ### Manual
