@@ -1,6 +1,6 @@
 {
   "domain": "smartme",
-  "name": "smart-me",
+  "name": "Smart-me",
   "codeowners": ["@timniklas"],
   "config_flow": true,
   "documentation": "https://github.com/timniklas/hacs_smart-me",
