@@ -84,7 +84,6 @@ class SensorActivePower(CoordinatorEntity):
     _attr_has_entity_name = True
     _attr_unit_of_measurement = UnitOfPower.WATT
     _attr_device_class = SensorDeviceClass.POWER
-    _attr_state_class = SensorStateClass.MEASUREMENT
     
     def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
@@ -100,6 +99,12 @@ class SensorActivePower(CoordinatorEntity):
     @property
     def state(self):
         return round(self.coordinator.data.device_data[self.translation_key] * 1000, 0)
+    
+    @property
+    def extra_state_attributes(self):
+        attrs = {}
+        attrs["state_class"] = SensorStateClass.MEASUREMENT
+        return attrs
 
 class SensorVoltage(CoordinatorEntity):
     
@@ -108,7 +113,6 @@ class SensorVoltage(CoordinatorEntity):
     _attr_has_entity_name = True
     _attr_unit_of_measurement = UnitOfElectricPotential.VOLT
     _attr_device_class = SensorDeviceClass.VOLTAGE
-    _attr_state_class = SensorStateClass.MEASUREMENT
     
     def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
@@ -124,6 +128,12 @@ class SensorVoltage(CoordinatorEntity):
     @property
     def state(self):
         return round(self.coordinator.data.device_data[self.translation_key], 1)
+    
+    @property
+    def extra_state_attributes(self):
+        attrs = {}
+        attrs["state_class"] = SensorStateClass.MEASUREMENT
+        return attrs
 
 class SensorCounterReading(CoordinatorEntity):
     
@@ -132,7 +142,6 @@ class SensorCounterReading(CoordinatorEntity):
     _attr_has_entity_name = True
     _attr_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL_INCREASING
     
     def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
@@ -148,3 +157,9 @@ class SensorCounterReading(CoordinatorEntity):
     @property
     def state(self):
         return self.coordinator.data.device_data[self.translation_key]
+    
+    @property
+    def extra_state_attributes(self):
+        attrs = {}
+        attrs["state_class"] = SensorStateClass.TOTAL_INCREASING
+        return attrs
