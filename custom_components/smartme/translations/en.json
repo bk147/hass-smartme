@@ -22,5 +22,42 @@
       "authentication": "Error during authentication.",
       "unknown": "Unknown Error"
     }
+  },
+  "entity": {
+    "sensor": {
+      "ActivePower": {
+        "name": "Power consumption"
+      },
+      "ActivePowerL1": {
+        "name": "Power consumption (L1)"
+      },
+      "ActivePowerL2": {
+        "name": "Power consumption (L2)"
+      },
+      "ActivePowerL3": {
+        "name": "Power consumption (L3)"
+      },
+      "Voltage": {
+        "name": "Voltage"
+      },
+      "VoltageL1": {
+        "name": "Voltage (L1)"
+      },
+      "VoltageL2": {
+        "name": "Voltage (L2)"
+      },
+      "VoltageL3": {
+        "name": "Voltage (L3)"
+      },
+      "CounterReading": {
+        "name": "Electricity meter"
+      },
+      "CounterReadingImport": {
+        "name": "Electricity meter (Import)"
+      },
+      "CounterReadingExport": {
+        "name": "Electricity meter (Export)"
+      }
+    }
   }
 }
