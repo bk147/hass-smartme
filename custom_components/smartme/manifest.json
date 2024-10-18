@@ -3,8 +3,8 @@
   "name": "Smart-me",
   "codeowners": ["@timniklas"],
   "config_flow": true,
-  "documentation": "https://github.com/timniklas//hass-smart-me",
+  "documentation": "https://github.com/timniklas/hass-smart-me",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/timniklas//hass-smart-me/issues",
+  "issue_tracker": "https://github.com/timniklas/hass-smart-me/issues",
   "version": "0.0.0"
 }
