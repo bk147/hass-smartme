@@ -25,37 +25,37 @@
   },
   "entity": {
     "sensor": {
-      "ActivePower": {
+      "active_power": {
         "name": "Power consumption"
       },
-      "ActivePowerL1": {
+      "active_power_l1": {
         "name": "Power consumption (L1)"
       },
-      "ActivePowerL2": {
+      "active_power_l2": {
         "name": "Power consumption (L2)"
       },
-      "ActivePowerL3": {
+      "active_power_l3": {
         "name": "Power consumption (L3)"
       },
-      "Voltage": {
+      "voltage": {
         "name": "Voltage"
       },
-      "VoltageL1": {
+      "voltage_l1": {
         "name": "Voltage (L1)"
       },
-      "VoltageL2": {
+      "voltage_l2": {
         "name": "Voltage (L2)"
       },
-      "VoltageL3": {
+      "voltage_l3": {
         "name": "Voltage (L3)"
       },
-      "CounterReading": {
+      "counter_reading": {
         "name": "Electricity meter"
       },
-      "CounterReadingImport": {
+      "counter_reading_import": {
         "name": "Electricity meter (Import)"
       },
-      "CounterReadingExport": {
+      "counter_reading_export": {
         "name": "Electricity meter (Export)"
       }
     }
