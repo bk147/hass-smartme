@@ -88,6 +88,7 @@ class SensorActivePower(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, translation: str, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
         self.device_info = deviceinfo
+        self.data_key = key
         self.translation_key = translation
         self.unique_id = f"{coordinator.deviceid}-{key}"
         self.entity_registry_enabled_default = visible
@@ -98,7 +99,7 @@ class SensorActivePower(CoordinatorEntity):
     
     @property
     def state(self):
-        return round(self.coordinator.data.device_data[self.translation_key] * 1000, 0)
+        return round(self.coordinator.data.device_data[self.data_key] * 1000, 0)
     
     @property
     def extra_state_attributes(self):
@@ -117,6 +118,7 @@ class SensorVoltage(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, translation: str, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
         self.device_info = deviceinfo
+        self.data_key = key
         self.translation_key = translation
         self.unique_id = f"{coordinator.deviceid}-{key}"
         self.entity_registry_enabled_default = visible
@@ -127,7 +129,7 @@ class SensorVoltage(CoordinatorEntity):
     
     @property
     def state(self):
-        return round(self.coordinator.data.device_data[self.translation_key], 1)
+        return round(self.coordinator.data.device_data[self.data_key], 1)
     
     @property
     def extra_state_attributes(self):
@@ -146,6 +148,7 @@ class SensorCounterReading(CoordinatorEntity):
     def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, translation: str, key: str, visible: bool = True) -> None:
         super().__init__(coordinator)
         self.device_info = deviceinfo
+        self.data_key = key
         self.translation_key = translation
         self.unique_id = f"{coordinator.deviceid}-{key}"
         self.entity_registry_enabled_default = visible
@@ -156,7 +159,7 @@ class SensorCounterReading(CoordinatorEntity):
     
     @property
     def state(self):
-        return self.coordinator.data.device_data[self.translation_key]
+        return self.coordinator.data.device_data[self.data_key]
     
     @property
     def extra_state_attributes(self):
