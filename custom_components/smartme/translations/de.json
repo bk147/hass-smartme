@@ -25,37 +25,37 @@
   },
   "entity": {
     "sensor": {
-      "ActivePower": {
+      "active_power": {
         "name": "Stromverbrauch"
       },
-      "ActivePowerL1": {
+      "active_power_l1": {
         "name": "Stromverbrauch (L1)"
       },
-      "ActivePowerL2": {
+      "active_power_l2": {
         "name": "Stromverbrauch (L2)"
       },
-      "ActivePowerL3": {
+      "active_power_l3": {
         "name": "Stromverbrauch (L3)"
       },
-      "Voltage": {
+      "voltage": {
         "name": "Spannung"
       },
-      "VoltageL1": {
+      "voltage_l1": {
         "name": "Spannung (L1)"
       },
-      "VoltageL2": {
+      "voltage_l2": {
         "name": "Spannung (L2)"
       },
-      "VoltageL3": {
+      "voltage_l3": {
         "name": "Spannung (L3)"
       },
-      "CounterReading": {
+      "counter_reading": {
         "name": "Stromzähler"
       },
-      "CounterReadingImport": {
+      "counter_reading_import": {
         "name": "Stromzähler (Import)"
       },
-      "CounterReadingExport": {
+      "counter_reading_export": {
         "name": "Stromzähler (Export)"
       }
     }
