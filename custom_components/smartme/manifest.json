@@ -6,5 +6,5 @@
   "documentation": "https://github.com/timniklas/hass-smart-me",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/timniklas/hass-smart-me/issues",
-  "version": "0.0.0"
+  "version": "0.0.1"
 }

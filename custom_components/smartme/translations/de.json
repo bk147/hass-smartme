@@ -37,6 +37,15 @@
       "active_power_l3": {
         "name": "Stromverbrauch (L3)"
       },
+      "current_l1": {
+        "name": "Strömung (L1)"
+      },
+      "current_l2": {
+        "name": "Strömung (L2)"
+      },
+      "current_l3": {
+        "name": "Strömung (L3)"
+      },
       "voltage": {
         "name": "Spannung"
       },

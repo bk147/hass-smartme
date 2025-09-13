@@ -50,6 +50,16 @@ async def async_setup_entry(
             identifiers={(DOMAIN, coordinator.deviceid)}
         ), translation="active_power_l3", key="ActivePowerL3", visible=False),
         
+        SensorCurrent(coordinator, DeviceInfo(
+            identifiers={(DOMAIN, coordinator.deviceid)}
+        ), translation="current_l1", key="CurrentL1", visible=False),
+        SensorCurrent(coordinator, DeviceInfo(
+            identifiers={(DOMAIN, coordinator.deviceid)}
+        ), translation="current_l2", key="CurrentL2", visible=False),
+        SensorCurrent(coordinator, DeviceInfo(
+            identifiers={(DOMAIN, coordinator.deviceid)}
+        ), translation="current_l3", key="CurrentL3", visible=False),
+
         SensorVoltage(coordinator, DeviceInfo(
             identifiers={(DOMAIN, coordinator.deviceid)}
         ), translation="voltage", key="Voltage"),
@@ -106,6 +116,37 @@ class SensorActivePower(CoordinatorEntity):
         attrs = {}
         attrs["state_class"] = SensorStateClass.MEASUREMENT
         return attrs
+
+class SensorCurrent(CoordinatorEntity):
+    
+    _attr_should_poll = False
+    
+    _attr_has_entity_name = True
+    _attr_unit_of_measurement = UnitOfElectricCurrent.AMPERE
+    _attr_device_class = SensorDeviceClass.CURRENT
+    
+    def __init__(self, coordinator: SmartmeCoordinator, deviceinfo: DeviceInfo, translation: str, key: str, visible: bool = True) -> None:
+        super().__init__(coordinator)
+        self.device_info = deviceinfo
+        self.data_key = key
+        self.translation_key = translation
+        self.unique_id = f"{coordinator.deviceid}-{key}"
+        self.entity_registry_enabled_default = visible
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self.async_write_ha_state()
+    
+    @property
+    def state(self):
+        return round(self.coordinator.data.device_data[self.data_key], 1)
+    
+    @property
+    def extra_state_attributes(self):
+        attrs = {}
+        attrs["state_class"] = SensorStateClass.MEASUREMENT
+        return attrs
+
 
 class SensorVoltage(CoordinatorEntity):
     
